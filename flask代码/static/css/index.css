@@ -1,0 +1,38 @@
+body {
+	background: #36F;
+	margin: 100px auto;
+}
+
+#switch {
+	text-align: center;
+	margin: auto;
+}
+
+#task {
+	padding-top: 20px;
+	width: 400px;
+	text-align: center;
+	margin: auto;
+}
+
+#timeTips {
+	width: 400px;
+	font-size: 30px;
+	text-align: center;
+	margin: auto;
+}
+
+#order {
+	width: 510px;
+	height: 200px;
+	margin: 50px auto;
+}
+
+#order form {
+	width: 240px;
+}
+
+#timer1,
+#timer2 {
+	font-size: 17px;
+}

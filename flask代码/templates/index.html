@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"/>
+    <script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+    <script type="text/javascript">
+        var state =
+        {{ state }}
+    </script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+</head>
+
+<body>
+<div id="timeTips"></div>
+<br/><br/>
+<div id="switch">
+    <input id="on" type="button" value="通电"/>
+    <input id="off" type="button" value="断电"/>
+</div>
+
+<div id='order'>
+    <form style="float: left;">
+        <select id="trigger1">
+            <option value="date">单次</option>
+            <option value="cron">每天</option>
+        </select>
+        <input id="timer1" type="time" name="orde_time"></input>
+        <input id="order_on" type="button" value="定时开"/>
+    </form>
+    <form style="float: right;">
+        <select id="trigger2">
+            <option value="date">单次</option>
+            <option value="cron">每天</option>
+        </select>
+        <input id="timer2" type="time" name="orde_time"></input>
+        <input id="order_off" type="button" value="定时关"/>
+    </form>
+
+
+    <table id="task">
+
+    </table>
+</div>
+
+</body>
+</html>
