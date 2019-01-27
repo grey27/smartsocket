@@ -3,7 +3,7 @@
 
 
 硬件:
-使用esp8266 继电器 减压模块
+使用esp8266 继电器 降压模块
 
 软件技术:
 micropython mqtt flask
