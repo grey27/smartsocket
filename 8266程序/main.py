@@ -5,10 +5,10 @@ import time
 import machine
 import mqtt
 
-# ÌîÈëÄã×Ô¼º·şÎñÆ÷µÄip
+# å¡«å…¥ä½ è‡ªå·±æœåŠ¡å™¨çš„ip
 HOST = '39.108.210.212'
 
-# ÌáÊ¾Ìø×ªÄ£°å Èı¸ö¿Õ,·Ö±ğÊÇÌáÊ¾´Ê,Ìø×ªÒ³Ãæ,µÈ´ıÌø×ªÊ±¼ä
+# æç¤ºè·³è½¬æ¨¡æ¿ ä¸‰ä¸ªç©º,åˆ†åˆ«æ˜¯æç¤ºè¯,è·³è½¬é¡µé¢,ç­‰å¾…è·³è½¬æ—¶é—´
 HINT_HTML = '''
     <!DOCTYPE html>
     <html>
@@ -25,13 +25,13 @@ HINT_HTML = '''
 
 
 def ConnectWifi(request):
-  # È¡³öwifiÃû×ÖÃÜÂë
+  # å–å‡ºwifiåå­—å¯†ç 
   print(request)
   r = ure.search('ssid=(.*)&password=(.*) H',request)
   ssid = r.group(1)
   password = r.group(2)
   
-  # Èç¹ûÕÒµ½ÖĞÎÄssid½øĞĞÒëÂë
+  # å¦‚æœæ‰¾åˆ°ä¸­æ–‡ssidè¿›è¡Œè¯‘ç 
   try:
     r = ure.search('(%..)+', ssid)
     cn = r.group(0)
@@ -41,14 +41,14 @@ def ConnectWifi(request):
   except:
     pass
 	
-  # Á¬½Ówifi
+  # è¿æ¥wifi
   sta = network.WLAN(network.STA_IF)
   sta.active(True)
   sta.disconnect()
   sta.connect(ssid,password)
   return ssid,password
 
-# »ñÈ¡ÅäÖÃÒ³Ãæ  
+# è·å–é…ç½®é¡µé¢  
 def get_index_html(ap_list):
   aplist = []
   for a in ap_list:
@@ -59,11 +59,11 @@ def get_index_html(ap_list):
     index_html = index_html.replace('ssid1',ssid,2)
   return index_html
   
-# ´ò¿ªstaÄ£Ê½
+# æ‰“å¼€staæ¨¡å¼
 sta = network.WLAN(network.STA_IF)
 sta.active(True)
 
-# ³¢ÊÔ´ò¿ªssidÎÄ¼ş»ñÈ¡Ö®Ç°ÅäÖÃµÄssid
+# å°è¯•æ‰“å¼€ssidæ–‡ä»¶è·å–ä¹‹å‰é…ç½®çš„ssid
 try:
   with open('ssid.py','r') as fp:
     ssid = fp.readline()
@@ -73,36 +73,36 @@ try:
 except:
   pass
 
-# Èç¹û¿ÉÒÔÁªÍø¼´¼àÌımqtt
+# å¦‚æœå¯ä»¥è”ç½‘å³ç›‘å¬mqtt
 if sta.isconnected():
   try:
-    mqtt_c = mqtt.MQTT("mqtt_id",HOST,b'switch',2)
+    mqtt_c = mqtt.MQTT("mqtt_id",HOST,b'switch',12)
     mqtt_c.loop()
   except:
     pass
     # machine.reset()
-# ·ñÔò´ò¿ªapÄ£Ê½ÈÃÓÃ»§Á¬½ÓÅäÖÃ
+# å¦åˆ™æ‰“å¼€apæ¨¡å¼è®©ç”¨æˆ·è¿æ¥é…ç½®
 else:
   ap_list = sta.scan()
   index_html = get_index_html(ap_list)
   ap = network.WLAN(network.AP_IF)
   ap.active(False)
   ap.active(True)
-  ap.config(essid='ÖÇÄÜ²å×ù',authmode=0)
+  ap.config(essid='æ™ºèƒ½æ’åº§',authmode=0)
 
-# ÉèÖÃwebserver
+# è®¾ç½®webserver
 addr = socket.getaddrinfo('192.168.4.1', 80)[0][-1]
 s = socket.socket()
 s.bind(addr)
 s.listen(5)
-# Ñ­»·¼àÌı
+# å¾ªç¯ç›‘å¬
 
 while True:
-  # »ñÈ¡request
+  # è·å–request
   cl, addr = s.accept()
   request = cl.recv(1024).decode()
   get = request.split('\n')[0]
-  # ÆÁ±Î¶Ôfavicon.icoµÄÇëÇó
+  # å±è”½å¯¹favicon.icoçš„è¯·æ±‚
   if 'favicon.ico' in get:
     cl.sendall('HTTP/1.1 404')
     cl.close()
@@ -112,7 +112,7 @@ while True:
     cl.send(responseHeaders)
 	
   if 'ssid' in get:
-    cl.sendall(HINT_HTML.format('<h1>Á¬½ÓÖĞ¡£¡£¡£</h1>','tips',10000))
+    cl.sendall(HINT_HTML.format('<h1>è¿æ¥ä¸­ã€‚ã€‚ã€‚</h1>','tips',10000))
     cl.close()
     ssid,password = ConnectWifi(request.split('\n')[0])
     continue
@@ -123,14 +123,14 @@ while True:
         fp.write(ssid)
         fp.write('\n')
         fp.write(password)
-      tips = '<h1>ÅäÖÃÍê³É,±¾»úip:' + sta.ifconfig()[0] + ',Éè±¸¼´½«ÖØÆô</h1><br><h1>·ÃÎÊ<a href="http://' + HOST + '">' + HOST + '</a>µÇÂ½ºóÌ¨¿ØÖÆ</h1>'
+      tips = '<h1>é…ç½®å®Œæˆ,æœ¬æœºip:' + sta.ifconfig()[0] + ',è®¾å¤‡å³å°†é‡å¯</h1><br><h1>è®¿é—®<a href="http://' + HOST + '">' + HOST + '</a>ç™»é™†åå°æ§åˆ¶</h1>'
       cl.sendall(HINT_HTML.format(tips,'index',3000))
       cl.close()
       time.sleep(3)
       ap.active(False)
       machine.reset()
     else:
-      cl.sendall(HINT_HTML.format('<h1>ÃÜÂë´íÎó</h1>','index',3000))
+      cl.sendall(HINT_HTML.format('<h1>å¯†ç é”™è¯¯</h1>','index',3000))
       cl.close()
     continue
 	  
