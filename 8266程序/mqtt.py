@@ -22,9 +22,9 @@ class MQTT():
 
 	def sub_cb(self,topic, msg):   #回调函数，收到服务器消息后会调用这个函数
 		print(topic, msg)
-		if msg == b'on':
+		if msg == b'true':
 		  self.pin.value(1)
-		if msg == b'off':
+		if msg == b'false':
 		  self.pin.value(0)
 		  
 if __name__ == '__main__':
