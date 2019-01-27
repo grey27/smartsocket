@@ -27,6 +27,7 @@ class MQTT():
 		if msg == b'false':
 		  self.pin.value(0)
 		  
+		  
 if __name__ == '__main__':
-	mqtt = MQTT('39.108.210.212',b'test',2)
+	mqtt = MQTT('id1','39.108.210.212',b'test',2)
 	mqtt.loop()
